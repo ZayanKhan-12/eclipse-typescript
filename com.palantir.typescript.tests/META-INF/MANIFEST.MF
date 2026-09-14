@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TypeScript Tests
+Bundle-SymbolicName: com.palantir.typescript.tests
+Bundle-Version: 2.1.0.qualifier
+Bundle-Vendor: Palantir Technologies
+Fragment-Host: com.palantir.typescript
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.0.0"

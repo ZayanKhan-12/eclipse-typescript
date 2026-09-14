@@ -73,6 +73,7 @@ public interface IPreferenceConstants {
     String FORMATTER_PLACE_OPEN_BRACE_ON_NEW_LINE_FOR_CONTROL_BLOCKS = "formatter.placeOpenBraceOnNewLineForControlBlocks";
     String FORMATTER_PLACE_OPEN_BRACE_ON_NEW_LINE_FOR_FUNCTIONS = "formatter.placeOpenBraceOnNewLineForFunctions";
 
+    String GENERAL_NODE_ARGUMENTS = "general.nodeArguments";
     String GENERAL_NODE_PATH = "general.nodePath";
     String GENERAL_USE_TSCONFIG_FILE = "general.useTsConfigFile";
 

@@ -59,6 +59,7 @@ public final class LanguageEndpoint {
 
     public LanguageEndpoint(String endpointName) {
         this.bridge = new Bridge(endpointName);
+        this.bridge.setRestartListener(new RestartListener());
 
         this.setLibContents();
     }
@@ -370,5 +371,19 @@ public final class LanguageEndpoint {
         String libES6Contents = readLibContents(LIB_ES6_FILE_NAME);
         Request request = new Request(SERVICE, "setLibContents", libContents, libES6Contents);
         this.bridge.call(request, Void.class);
+    }
+
+    /**
+     * Restores the state a restarted node process needs before it can answer requests again.
+     * <p>
+     * The projects themselves are not restored here: callers already check {@link #isProjectInitialized(IProject)} and
+     * reinitialize the ones they need.
+     */
+    private final class RestartListener implements Runnable {
+
+        @Override
+        public void run() {
+            LanguageEndpoint.this.setLibContents();
+        }
     }
 }
