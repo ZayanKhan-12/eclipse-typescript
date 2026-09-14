@@ -43,3 +43,18 @@ An Eclipse plug-in for developing in the TypeScript language.
 ### Build and Test
 * Run `maven package`
 * Install zip in Eclipse following `Install New Software...` -> `Add...` -> `Archive...`
+* Run `mvn integration-test` to run the JUnit tests in `com.palantir.typescript.tests`
+
+The tests in `com.palantir.typescript.tests` have no Eclipse dependencies, so they can also be
+compiled and run directly with `javac`/`java` against `com.palantir.typescript/lib/*.jar` and JUnit 4
+when the Tycho toolchain is not available.
+
+## Troubleshooting
+### "The node process has crashed"
+The plug-in runs the TypeScript services in a node child process. When that process dies, the error
+reports the exit code and whatever node wrote to stderr, which normally says what went wrong.
+
+The most common cause on large projects is node running out of heap (`JavaScript heap out of
+memory`). The default limit is around 1.5 GB on 64-bit node. To raise it, set **Node arguments** in
+`Preferences -> TypeScript -> General` to something like `--max-old-space-size=4096` and restart
+Eclipse. It is also worth excluding folders such as `node_modules` from the TypeScript build path.

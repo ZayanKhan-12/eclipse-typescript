@@ -195,6 +195,7 @@ public final class TypeScriptPlugin extends AbstractUIPlugin {
         store.setDefault(IPreferenceConstants.FORMATTER_PLACE_OPEN_BRACE_ON_NEW_LINE_FOR_CONTROL_BLOCKS, false);
         store.setDefault(IPreferenceConstants.FORMATTER_PLACE_OPEN_BRACE_ON_NEW_LINE_FOR_FUNCTIONS, false);
 
+        store.setDefault(IPreferenceConstants.GENERAL_NODE_ARGUMENTS, "");
         store.setDefault(IPreferenceConstants.GENERAL_NODE_PATH, findNodejs());
 
         store.setDefault(IPreferenceConstants.SYNTAX_COLORING_COMMENT_COLOR, "63,127,95");

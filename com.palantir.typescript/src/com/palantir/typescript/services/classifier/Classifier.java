@@ -37,7 +37,8 @@ public final class Classifier {
     private final Bridge bridge;
 
     public Classifier(String endpointName) {
-        this.bridge = new Bridge(endpointName);
+        // the classifier keeps no state in the node process, so a request can safely be replayed after a crash
+        this.bridge = new Bridge(endpointName, true);
     }
 
     public List<ClassificationResult> getClassificationsForLines(List<String> lines, EndOfLineState lexState) {

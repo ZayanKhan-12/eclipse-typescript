@@ -45,6 +45,7 @@ import com.palantir.typescript.TypeScriptPlugin;
  */
 public final class GeneralPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
+    private Text nodeArgumentsText;
     private Text nodePathText;
 
     public GeneralPreferencePage() {
@@ -76,23 +77,49 @@ public final class GeneralPreferencePage extends PreferencePage implements IWork
         button.setText("Browse...");
         button.addListener(SWT.Selection, new MyListener(this.nodePathText));
 
+        Label argumentsLabel = new Label(composite, SWT.NONE);
+        argumentsLabel.setLayoutData(new GridData(GridData.BEGINNING, SWT.CENTER, false, false));
+        argumentsLabel.setText(getResource("node.arguments"));
+
+        this.nodeArgumentsText = new Text(composite, SWT.BORDER);
+        this.nodeArgumentsText.setFont(composite.getFont());
+        this.nodeArgumentsText.setLayoutData(new GridData(GridData.FILL, SWT.CENTER, true, false));
+        this.nodeArgumentsText.setText(this.getPreferenceStore().getString(IPreferenceConstants.GENERAL_NODE_ARGUMENTS));
+        this.nodeArgumentsText.setToolTipText(getResource("node.arguments.tooltip"));
+
+        // filler for the browse button column
+        new Label(composite, SWT.NONE);
+
         return composite;
     }
 
     @Override
     public boolean performOk() {
-        String oldNodePath = this.getPreferenceStore().getString(IPreferenceConstants.GENERAL_NODE_PATH);
-        String newNodePath = this.nodePathText.getText();
+        boolean rebootRequired = false;
 
-        if (!oldNodePath.equals(newNodePath)) {
-            String title = Resources.BUNDLE.getString("preferences.general.node.path.dialog.title");
-            String message = Resources.BUNDLE.getString("preferences.general.node.path.dialog.message");
+        rebootRequired |= this.savePreference(IPreferenceConstants.GENERAL_NODE_PATH, this.nodePathText.getText());
+        rebootRequired |= this.savePreference(IPreferenceConstants.GENERAL_NODE_ARGUMENTS, this.nodeArgumentsText.getText());
+
+        // both settings are only read when the node process is started
+        if (rebootRequired) {
+            String title = Resources.BUNDLE.getString("preferences.general.node.dialog.title");
+            String message = Resources.BUNDLE.getString("preferences.general.node.dialog.message");
             String[] buttonLabels = new String[] { IDialogConstants.OK_LABEL };
             MessageDialog dialog = new MessageDialog(this.getShell(), title, null, message, MessageDialog.QUESTION, buttonLabels, 2);
             dialog.open();
-
-            this.getPreferenceStore().setValue(IPreferenceConstants.GENERAL_NODE_PATH, newNodePath);
         }
+
+        return true;
+    }
+
+    private boolean savePreference(String name, String newValue) {
+        String oldValue = this.getPreferenceStore().getString(name);
+
+        if (oldValue.equals(newValue)) {
+            return false;
+        }
+
+        this.getPreferenceStore().setValue(name, newValue);
 
         return true;
     }
